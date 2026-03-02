@@ -14,10 +14,10 @@ A Home Assistant custom integration to monitor and control [Indevolt](https://ww
 
 - [ ] Confirm the firmware version meets the minimum requirement.
 
-  | Model                       | Version                         |
+  | Model                       | Minimum Firmware Version        |
   | --------------------------- | ------------------------------- |
   | BK1600/BK1600Ultra          | V1.3.0A_R006.072_M4848_00000039 |
-  | SolidFlex2000/PowerFlex2000 | CMS: V1406.07.002B; <br />Pfile: V0D.00.11 |
+  | SolidFlex2000/PowerFlex2000 | CMS: V1406.07.002E |
 
 <img width="400" alt="4fw_version" src="https://github.com/user-attachments/assets/7fb6d58f-9c95-4945-b588-810e68481f5b" />
 
