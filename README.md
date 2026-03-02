@@ -17,7 +17,7 @@ A Home Assistant custom integration to monitor and control [Indevolt](https://ww
   | Model                       | Version                         |
   | --------------------------- | ------------------------------- |
   | BK1600/BK1600Ultra          | V1.3.0A_R006.072_M4848_00000039 |
-  | SolidFlex2000/PowerFlex2000 | CMS: V1406.07.002B; Pfile: V0D.00.11 |
+  | SolidFlex2000/PowerFlex2000 | CMS: V1406.07.002B; <br />Pfile: V0D.00.11 |
 
 <img width="400" alt="4fw_version" src="https://github.com/user-attachments/assets/7fb6d58f-9c95-4945-b588-810e68481f5b" />
 
@@ -92,26 +92,37 @@ config directory/
 ## Step 6: Add integration to Home Assistant
 
 1. After restarting, enter the web interface and select **Settings** > **Devices & services**.
-2. Click **+ADD INTEGRATION** in the lower right corner.
-3. Search for integration INDEVOLT.
+    <img width="800" alt="" src="https://github.com/user-attachments/assets/f19c8fba-7eec-4994-8fed-4b5a7b2b2d3b" />
+
+
+2. Click **+ADD INTEGRATION** in the lower right corner.  
+   <img width="150" alt="image" src="https://github.com/user-attachments/assets/9282240e-f408-4ab0-a2ca-e6701994eaee" />
+
+3. Search for integration INDEVOLT.  
+    <img width="400" alt="" src="https://github.com/user-attachments/assets/836a3d34-d2ad-44c0-87f2-79fc80acd52d" />
+
 4. Configuration parameters:
    - `host`: Device IP address, which can be obtained by checking the router/app.
-   - `scan_interval`: Used to control the frequency of data updates, default is 30 seconds.
+   - `scan_interval`: Used to control the frequency of data updates, default is 30 seconds.  
+
+     <img width="300" alt="" src="https://github.com/user-attachments/assets/0a0d38ed-15ed-4072-98bf-c94920d362cb" />
+
 5. Click **SUBMIT** to finish the installation.
 6. The power module and battery packs will be displayed after installation. Click Skip and Finish to complete the setup process.
-  - Each power module supports up to 5 battery packs.
-  - If no battery pack is connected, the corresponding field will be shown as None.
-  - When battery packs are connected, the serial number (SN) of each battery pack will be displayed for identification.
-
-<img width="600" alt="6add_integration" src="https://github.com/user-attachments/assets/b435073a-cd55-49fb-bcae-ffd698821c1a" />
-<img width="300" alt="7add_device" src="https://github.com/user-attachments/assets/ce18f3e0-9658-4052-bbbd-02dfea022dbb" />
+    - Each power module supports up to 5 battery packs.
+    - If no battery pack is connected, the corresponding field will be shown as None.
+    - When battery packs are connected, the serial number (SN) of each battery pack will be displayed for identification.  
+    <img width="300" alt="image" src="https://github.com/user-attachments/assets/f316fa13-44e4-4325-b3a8-09b904b0bd6f" />
 
 
 ## View Integration
 
 Select the INDEVOLT integration to display the device and entity information.
 
-<img width="800" alt="8view_integration" src="https://github.com/user-attachments/assets/731e767d-c41c-4c5e-b1f6-a6eae28fffd7" />
+<img width="300" alt="" src="https://github.com/user-attachments/assets/3997f4c9-c146-4c87-9d48-c0970dbe833c" />
+
+<img width="800" alt="" src="https://github.com/user-attachments/assets/c26f0a2c-70ae-456b-9c66-683c2cb52617" />
+
 
 
 
@@ -120,20 +131,40 @@ Select the INDEVOLT integration to display the device and entity information.
 1. Download the latest version of the integration file.
 2. Replace the files in `custom_components/indevolt`.
 3. Click the three-dot menu  next to the previously added device and select **Delete**.
-4. Restart Home Assistant.
-5. Click the button **Add Entry** and follow the same device setup process to add the device again.
+   <img width="600" alt="image" src="https://github.com/user-attachments/assets/91042043-4949-46b8-8b5b-4ee0027a0a30" />
+
+5. Restart Home Assistant.
+6. Click the button **Add Entry** and follow the same device setup process to add the device again.
 
 
 ## Create Automation: Set Real-Time Control
 
 1. Go to **Settings** > **Automations & scenes**.
+    <img width="800" alt="" src="https://github.com/user-attachments/assets/b5bb0b3a-9fce-49ae-b0ce-c9637e69cf9d" />
+
 2. Click the button in the lower right corner **+ Create automation**.
-3. Select **Create new automation**.
-4. Click **+ Add Trigger** and configure the trigger event based on your requirements.
+    <img width="800" alt="" src="https://github.com/user-attachments/assets/6c3ed052-eba3-4ae1-b344-4b3c4004eb80" />
+
+3. Select **Create new automation**.  
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/0dd42045-2eeb-4750-b4a6-d8ada2289b0b" />
+
+4. Click **+ Add Trigger** and configure the trigger event based on your requirements.  
+   <img width="500" alt="image" src="https://github.com/user-attachments/assets/2988715f-c0ae-4bac-964e-7d483540120f" />
+
 5. Click **+ Add Action** to configure the device action.
-6. Search for mode and select Set SolidFlex2000/PowerFlex2000 Work Mode (as an example).
-7. In the **Target** section, click **+ Choose Device** and select your device from the list.
-8. In the **Work Mode** section, choose **Real-Time Control**, then configure **Status**, **Power**, and **Target SOC** as needed.
+6. Search for mode and select Set SolidFlex2000/PowerFlex2000 Work Mode (as an example).  
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/9b03b0f5-ecbd-43eb-a1f1-e3b82019724f" />
+
+7. In the **Target** section, click **+ Choose Device** and select your device from the list.  
+    <img width="800" alt="" src="https://github.com/user-attachments/assets/91964bf7-454e-48b3-9064-badb18706489" />
+    <img width="300" alt="image" src="https://github.com/user-attachments/assets/6a7b6638-5be3-4749-aed2-f088a73d8fd4" />
+
+
+8. In the **Work Mode** section, choose **Real-Time Control**, then configure **Status**, **Power**, and **Target SOC** as needed.  
+    <img width="300" alt="image" src="https://github.com/user-attachments/assets/bedb1966-513f-4246-b7c4-5f5c579a2e3f" />
+    <img width="300" alt="image" src="https://github.com/user-attachments/assets/a6ffeff5-e5c7-45a4-8aa5-5a948ce04b36" />
+
+
 9. Click **Save** to complete the automation setup.
 
 
