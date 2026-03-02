@@ -1,0 +1,105 @@
+set_solidflex_powerflex_work_mode:
+  name: Set SolidFlex2000/PowerFlex2000 Work Mode
+  description: Configure operating mode and control parameters for SolidFlex2000 / PowerFlex2000 devices.
+  
+  target:
+    device:
+      integration: indevolt
+
+  fields:
+
+    mode:
+      name: Work Mode
+      description: Select device work mode
+      required: true
+      selector:
+        select:
+          options:
+            - Self-Consumed Prioritized
+            - Real-Time Control
+            - Charge/Discharge Schedule
+
+    state:
+      name: Status
+      description: Available in Real-time control
+      required: false
+      selector:
+        select:
+          options:
+            - Standby
+            - Charging
+            - Discharging
+
+    power:
+      name: Power (W)
+      description: 50~2400W (Available in Real-time control)
+      required: false
+      selector:
+        number:
+          min: 50
+          max: 2400
+          step: 10
+          unit_of_measurement: W
+
+    soc:
+      name: Target SOC (%)
+      description: 5~100% (Available in Real-time control)
+      required: false
+      selector:
+        number:
+          min: 5
+          max: 100
+          step: 1
+          unit_of_measurement: "%"
+
+set_bk1600_work_mode:
+  name: Set BK1600/BK1600 Ultra Work Mode
+  description: Configure BK1600 / BK1600 Ultra device operating mode.
+
+  target:
+    device:
+      integration: indevolt
+
+  fields:
+
+    mode:
+      name: Work Mode
+      description: Set Real-Time Control Mode
+      required: true
+      selector:
+        select:
+          options:
+            - Real-Time Control
+
+    state:
+      name: Status
+      description: Available in Real-time control
+      required: false
+      selector:
+        select:
+          options:
+            - Standby
+            - Charging
+            - Discharging
+
+    power:
+      name: Power (W)
+      description: Charging:0-1200W; Discharging:0-800W (Available in Real-time control)
+      required: false
+      selector:
+        number:
+          min: 0
+          max: 1200
+          step: 10
+          unit_of_measurement: W
+
+    soc:
+      name: Target SOC (%)
+      description: 5~100% (Available in Real-time control)
+      required: false
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+          unit_of_measurement: "%"

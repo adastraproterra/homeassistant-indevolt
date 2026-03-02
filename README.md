@@ -9,22 +9,7 @@ A Home Assistant custom integration to monitor and control [Indevolt](https://ww
 - [ ] The Indevolt device is powered on and has obtained an **IP address**.
   - Query via router’s management list;
   - Check in INDEVOLT App device settings;
-  - Obtain IP via UDP broadcast:
-    1. Ensure the device's WiFi network and computer are on the same local area network.
-    2. Open a network debugging tool.
-    3. Select UDP protocol.
-    4. Select Local Host Addr.
-    5. Set Local Host Post to 10000.
-    6. Click Open.
-    7. Configure Remote with broadcast address and port: 255.255.255.255:8099.
-    8. Enter AT command in message box: AT+IGDEVICEIP.
-    9. Click Send.
-    10. INDEVOLT devices on the same network will respond with their IP address and serial number (SN).  
-    <img width="200" alt="1set_udp" src="https://github.com/user-attachments/assets/68674988-fc59-438e-b703-548eff6167d7" />
-
-    <img width="800" alt="2obtain_ip" src="https://github.com/user-attachments/assets/027b3e69-81b4-4894-bd7f-ca5b5b204ceb" />
-
-- [ ] Ensure that the Indevolt device **API function is enabled**. This integration only supports OpenData HTTP unencrypted mode.
+- [ ] Ensure that the Indevolt device **API function is enabled**. This integration only supports OpenData HTTP mode.
 <img width="800" alt="3http_mode" src="https://github.com/user-attachments/assets/67f8ed96-abb8-4368-b3f3-b2a3484bd4b9" />
 
 - [ ] Confirm the firmware version meets the minimum requirement.
@@ -32,7 +17,7 @@ A Home Assistant custom integration to monitor and control [Indevolt](https://ww
   | Model                       | Version                         |
   | --------------------------- | ------------------------------- |
   | BK1600/BK1600Ultra          | V1.3.0A_R006.072_M4848_00000039 |
-  | SolidFlex2000/PowerFlex2000 | V1.3.09_R00D.012_M4801_00000015 |
+  | SolidFlex2000/PowerFlex2000 | CMS: V1406.07.002B; Pfile: V0D.00.11 |
 
 <img width="400" alt="4fw_version" src="https://github.com/user-attachments/assets/7fb6d58f-9c95-4945-b588-810e68481f5b" />
 
@@ -85,10 +70,13 @@ config directory/
         ├── const.py
         ├── coordinator.py
         ├── entity.py
+        ├── indevolt_api.py
         ├── manifest.json
+        ├── number.py
+        ├── select.py
         ├── sensor.py
-        ├── indevolt.py
-        ├── strings.json
+        ├── service.yaml
+        ├── switch.py
 ```
 
 ## Step 5: Restart Home Assistant
@@ -107,11 +95,13 @@ config directory/
 2. Click **+ADD INTEGRATION** in the lower right corner.
 3. Search for integration INDEVOLT.
 4. Configuration parameters:
-   - host: Device IP address, which can be obtained by checking the router/app.
-   - port: Default 8080.
-   - scan_interval: Used to control the frequency of data updates, default is 30 seconds.
-   - device_model: the model of your Indevolt device
+   - `host`: Device IP address, which can be obtained by checking the router/app.
+   - `scan_interval`: Used to control the frequency of data updates, default is 30 seconds.
 5. Click **SUBMIT** to finish the installation.
+6. The power module and battery packs will be displayed after installation. Click Skip and Finish to complete the setup process.
+  - Each power module supports up to 5 battery packs.
+  - If no battery pack is connected, the corresponding field will be shown as None.
+  - When battery packs are connected, the serial number (SN) of each battery pack will be displayed for identification.
 
 <img width="600" alt="6add_integration" src="https://github.com/user-attachments/assets/b435073a-cd55-49fb-bcae-ffd698821c1a" />
 <img width="300" alt="7add_device" src="https://github.com/user-attachments/assets/ce18f3e0-9658-4052-bbbd-02dfea022dbb" />
@@ -129,8 +119,23 @@ Select the INDEVOLT integration to display the device and entity information.
 
 1. Download the latest version of the integration file.
 2. Replace the files in `custom_components/indevolt`.
-3. Restart Home Assistant.
-4. To ensure all new features are loaded, remove the device from Home Assistant and then re-add it.
+3. Click the three-dot menu  next to the previously added device and select **Delete**.
+4. Restart Home Assistant.
+5. Click the button **Add Entry** and follow the same device setup process to add the device again.
+
+
+## Create Automation: Set Real-Time Control
+
+1. Go to **Settings** > **Automations & scenes**.
+2. Click the button in the lower right corner **+ Create automation**.
+3. Select **Create new automation**.
+4. Click **+ Add Trigger** and configure the trigger event based on your requirements.
+5. Click **+ Add Action** to configure the device action.
+6. Search for mode and select Set SolidFlex2000/PowerFlex2000 Work Mode (as an example).
+7. In the **Target** section, click **+ Choose Device** and select your device from the list.
+8. In the **Work Mode** section, choose **Real-Time Control**, then configure **Status**, **Power**, and **Target SOC** as needed.
+9. Click **Save** to complete the automation setup.
+
 
 ## FAQ
 

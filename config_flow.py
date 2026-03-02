@@ -1,8 +1,7 @@
 import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from .const import DOMAIN, DEFAULT_PORT, DEFAULT_SCAN_INTERVAL, SUPPORTED_MODELS
-from .utils import get_device_gen
+from .const import DOMAIN, DEFAULT_PORT, DEFAULT_SCAN_INTERVAL
 import logging
 import asyncio
 from .coordinator import IndevoltAPI
@@ -24,35 +23,35 @@ class IndevoltConfigFlow(ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
             host = user_input["host"]
-            port = user_input.get("port", DEFAULT_PORT)
             scan_interval = user_input.get("scan_interval", DEFAULT_SCAN_INTERVAL)
-            device_model = user_input["device_model"]
 
-            api = IndevoltAPI(host, port, async_get_clientsession(self.hass))
-
-            device_gen = get_device_gen(device_model)
-            
+            api = IndevoltAPI(host, DEFAULT_PORT, async_get_clientsession(self.hass))            
 
             try:
-                fw_version=""
-                if device_gen == 1:
-                    fw_version="V1.3.0A_R006.072_M4848_00000039"
-                else:
-                    fw_version="V1.3.09_R00D.012_M4801_00000015"
+                data = await api.get_config()
 
-                data = await api.fetch_data([0])
-                device_sn = data.get("0")
+                device = data.get("device", {})
+                device_model = device.get("type")
+                device_sn = device.get("sn")
+
+                if "SF2000" in device_model:
+                    device_model = "SolidFlex/PowerFlex2000"
+                elif "BK1600" in device_model:
+                    device_model = "BK1600/BK1600Ultra"
+
+                await self.async_set_unique_id(device_sn)
+                self._abort_if_unique_id_configured()
 
                 # Create configuration entry on successful connection.
                 return self.async_create_entry(
                     title=f"INDEVOLT {device_model} ({host})", # Entry title shown in HA UI.
                     data={
                         "host": host,
-                        "port": port,
+                        "port": DEFAULT_PORT,
                         "scan_interval": scan_interval,
                         "sn": device_sn,
                         "device_model": device_model,
-                        "fw_version": fw_version
+                        "fw_version": device.get("f_ver")
                     }
                 )
             
@@ -66,9 +65,7 @@ class IndevoltConfigFlow(ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema({
                 vol.Required("host"): str,
-                vol.Optional("port", default=DEFAULT_PORT): int,
                 vol.Optional("scan_interval", default=DEFAULT_SCAN_INTERVAL): int,
-                vol.Required("device_model"): vol.In(SUPPORTED_MODELS),
             }),
             errors=errors
         )

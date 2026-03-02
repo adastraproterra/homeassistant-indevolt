@@ -4,10 +4,8 @@ DOMAIN = "indevolt"
 DEFAULT_PORT = 8080
 DEFAULT_SCAN_INTERVAL = 30
 PLATFORMS = [
-    Platform.SENSOR
-]
-
-SUPPORTED_MODELS = [
-    "BK1600/BK1600Ultra",
-    "SolidFlex/PowerFlex2000"
+    Platform.SENSOR,
+    Platform.SWITCH,
+    Platform.NUMBER,
+    Platform.SELECT,
 ]
