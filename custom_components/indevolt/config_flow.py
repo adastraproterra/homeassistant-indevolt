@@ -10,27 +10,26 @@ _LOGGER = logging.getLogger(__name__)
 
 class IndevoltConfigFlow(ConfigFlow, domain=DOMAIN):
     """Configuration flow for Indevolt integration."""
+
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
+        """
+        Handle the initial user configuration step.
+        This method is called when the user initiates the integration setup.
+        It presents a form for device connection parameters and validates them.
+        """
+        
         errors = {}
-
         if user_input is not None:
             host = user_input["host"]
-            port = user_input.get("port", DEFAULT_PORT)
             scan_interval = user_input.get("scan_interval", DEFAULT_SCAN_INTERVAL)
-            username = user_input.get("username", "")
-            password = user_input.get("password", "")
 
-            api = IndevoltAPI(
-                host, port,
-                async_get_clientsession(self.hass),
-                username=username,
-                password=password
-            )
+            api = IndevoltAPI(host, DEFAULT_PORT, async_get_clientsession(self.hass))            
 
             try:
                 data = await api.get_config()
+
                 device = data.get("device", {})
                 device_model = device.get("type")
                 device_sn = device.get("sn")
@@ -43,20 +42,19 @@ class IndevoltConfigFlow(ConfigFlow, domain=DOMAIN):
                 await self.async_set_unique_id(device_sn)
                 self._abort_if_unique_id_configured()
 
+                # Create configuration entry on successful connection.
                 return self.async_create_entry(
-                    title=f"INDEVOLT {device_model} ({host})",
+                    title=f"INDEVOLT {device_model} ({host})", # Entry title shown in HA UI.
                     data={
                         "host": host,
-                        "port": port,
+                        "port": DEFAULT_PORT,
                         "scan_interval": scan_interval,
-                        "username": username,
-                        "password": password,
                         "sn": device_sn,
                         "device_model": device_model,
                         "fw_version": device.get("f_ver")
                     }
                 )
-
+            
             except asyncio.TimeoutError:
                 errors["base"] = "timeout"
             except Exception as e:
@@ -67,9 +65,6 @@ class IndevoltConfigFlow(ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema({
                 vol.Required("host"): str,
-                vol.Optional("port", default=DEFAULT_PORT): int,
-                vol.Optional("username", default="admin"): str,
-                vol.Optional("password", default=""): str,
                 vol.Optional("scan_interval", default=DEFAULT_SCAN_INTERVAL): int,
             }),
             errors=errors
