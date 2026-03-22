@@ -19,7 +19,7 @@ class IndevoltConfigFlow(ConfigFlow, domain=DOMAIN):
             host = user_input["host"]
             port = user_input.get("port", DEFAULT_PORT)
             scan_interval = user_input.get("scan_interval", DEFAULT_SCAN_INTERVAL)
-            username = user_input.get("username", "admin")
+            username = user_input.get("username", "")
             password = user_input.get("password", "")
 
             api = IndevoltAPI(
